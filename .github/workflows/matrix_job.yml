@@ -26,6 +26,6 @@ jobs:
       - name: Pull Docker Image
         run: docker pull ${{ matrix.docker_image }}
       - name: Package type
-        run: echo "package is:" ${{ matrix.file_type }}
+        run: echo package is ${{ matrix.file_type }}
       - name: Job build
-        run: "node run build !" ${{ matrix.os }}
+        run: echo node run build ! ${{ matrix.os }}
