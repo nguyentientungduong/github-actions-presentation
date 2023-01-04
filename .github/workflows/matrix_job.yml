@@ -1,0 +1,31 @@
+name: Build product when release
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  release_package:
+    name: Create and release ${{ matrix.file_type }} file for ${{ matrix.os }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - os: Ubuntu
+            file_type: deb
+            docker_image: ubuntu:latest
+          - os: Centos
+            file_type: rpm
+            docker_image: centos:latest
+          - os: Opensuse
+            file_type: rpm
+            docker_image: opensuse/leap:latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Pull Docker Image
+        run: docker pull ${{ matrix.docker_image }}
+      - name: Package type
+        run: echo "package is:" ${{ matrix.file_type }}
+      - name: Job build
+        run: "node run build !" ${{ matrix.os }}
